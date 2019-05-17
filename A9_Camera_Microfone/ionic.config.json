@@ -1,5 +1,7 @@
 {
   "name": "A9_Camera_Microfone",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
