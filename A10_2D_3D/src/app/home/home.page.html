@@ -6,9 +6,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
+ 
+
+  
+<ion-content padding>
+  <div full>
+    <h1>x = {{x}}</h1>
+    <h1>y = {{y}}</h1>
+    <h1>z = {{z}}</h1>
+    <h1>timestamp = {{timestamp}}</h1>
+<button ion-button full (click)= "start()"> Start Listening</button>
+<button ion-button full (click)= "stop()"> stop Listening</button>
+  
   </div>
+    
+
 </ion-content>
