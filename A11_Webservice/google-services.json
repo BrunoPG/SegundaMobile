@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "950250460434",
+    "firebase_url": "https://evento-cec3e.firebaseio.com",
+    "project_id": "evento-cec3e",
+    "storage_bucket": "evento-cec3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950250460434:android:764d2cb7da3280eb",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950250460434-ct29ick2mrt2v4ftodratftus43m4l3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4WVIiN8oIe_gBl9VGYojQ9_PCL_prqJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950250460434-ct29ick2mrt2v4ftodratftus43m4l3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
