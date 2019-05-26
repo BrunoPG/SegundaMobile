@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Geolocation} from '@ionic-native/geolocation/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
+declare var google;
 
 @Component({
   selector: 'app-tab1',
@@ -8,26 +9,37 @@ import { Geolocation} from '@ionic-native/geolocation/ngx';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  
- 
-  constructor(private geolocation : Geolocation) {
-    console.log('paodebatata');
-    //this.getUserPosition();
-    this.geolocation.getCurrentPosition().then((resp) => {
-      // resp.coords.latitude
-      console.log(resp)
-      
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
-     
-   let watch = this.geolocation.watchPosition();
-   watch.subscribe((data) => {
-    // data can be a set of coordinates, or an error (if an error occurred).
-    // data.coords.latitude
-    // data.coords.longitude
-   });
+
+  map: any;
+  constructor(private geolocation: Geolocation) {
+
+    this.Gps();
+
   }
 
-  
+  Gps() {
+    
+    this.geolocation.getCurrentPosition().then((resp) => {
+        const position = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+
+        const mapOptions = {
+          zoom: 18,
+          center: position
+        }
+
+        this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        const marker = new google.maps.Marker({
+          position: position,
+          map: this.map
+        });
+
+      }).catch((error) => {
+        console.log('Erro ao recuperar sua posição', error);
+      });
+  }
+
+
+
+
 }

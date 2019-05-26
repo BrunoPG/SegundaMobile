@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-home',
@@ -7,12 +8,35 @@ import { MediaCapture, MediaFile, CaptureError, CaptureImageOptions } from '@ion
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  constructor(private mediaCapture: MediaCapture) { }
-  batata(){
-  let options: CaptureImageOptions = { limit: 3 }
-  this.mediaCapture.captureImage(options)
-  .then(
-    (data: MediaFile[]) => console.log(data),
-    (err: CaptureError) => console.error(err)
-  );}
+
+
+  photo : string = ''
+
+  constructor(private cam: Camera) { }
+
+
+
+  camera() {
+
+    this.photo = '';
+
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.cam.DestinationType.DATA_URL,
+      encodingType: this.cam.EncodingType.JPEG,
+      mediaType: this.cam.MediaType.PICTURE
+    }
+
+    this.cam.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+      this.photo = base64Image;
+
+     }, (err) => {
+      // Handle error
+     });
+
+  }
 }
