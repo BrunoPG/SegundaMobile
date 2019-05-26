@@ -8,14 +8,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DeviceMotion , DeviceMotionAccelerationData} from '@ionic-native/device-motion';
-import { HomePage } from './home/home.page';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomePage
-  ],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [

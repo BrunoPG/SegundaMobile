@@ -1,5 +1,13 @@
 {
   "name": "A11_Webservice",
-  "integrations": {},
-  "type": "angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://localhost:3456/"
+    }
+  ]
 }
