@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MediaFile, CaptureError, CaptureImageOptions } from '@ionic-native/media-capture/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
@@ -10,7 +9,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 export class HomePage {
 
 
-  photo : string = ''
+  photo: string = ''
 
   constructor(private cam: Camera) { }
 
@@ -24,7 +23,8 @@ export class HomePage {
       quality: 100,
       destinationType: this.cam.DestinationType.DATA_URL,
       encodingType: this.cam.EncodingType.JPEG,
-      mediaType: this.cam.MediaType.PICTURE
+      mediaType: this.cam.MediaType.PICTURE,
+      saveToPhotoAlbum: true
     }
 
     this.cam.getPicture(options).then((imageData) => {
@@ -34,9 +34,9 @@ export class HomePage {
 
       this.photo = base64Image;
 
-     }, (err) => {
+    }, (err) => {
       // Handle error
-     });
+    });
 
   }
 }

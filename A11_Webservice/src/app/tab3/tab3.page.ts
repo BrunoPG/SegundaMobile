@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Push, PushObject, PushOptions } from "@ionic-native/push/ngx";
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -8,7 +9,10 @@ import { Push, PushObject, PushOptions } from "@ionic-native/push/ngx";
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  constructor(private push: Push){
+
+
+
+  constructor(private push: Push, public alertCtrl: AlertController) {
     this.pushsetup();
   }
 
@@ -17,15 +21,15 @@ export class Tab3Page {
 
     const pushObject: PushObject = this.push.init(options);
 
-    pushObject.on("registration").subscribe((registration: any) => {});
+    pushObject.on("registration").subscribe((registration: any) => { });
 
     pushObject.on("notification").subscribe((notification: any) => {
       if (notification.additionalData.foreground) {
-        let youralert = this.alertCtrl.create({
+        /*let youralert = this.alertCtrl.create({
           title: notification.label,
           message: notification.message
         });
-        youralert.present();
+        youralert.present();*/
       }
     });
   }
