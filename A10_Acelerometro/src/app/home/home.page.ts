@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Gyroscope, GyroscopeOrientation, GyroscopeOptions } from '@ionic-native/gyroscope/ngx';
-import { DOCUMENT } from '@angular/common';
 
 var subscription;
 
@@ -14,8 +13,7 @@ export class HomePage {
   x: any
   y: any
   z: any
-  tam: number
-  constructor(private gyroscope: Gyroscope, private document: Document) {
+  constructor(private gyroscope: Gyroscope) {
 
   }
 
@@ -32,9 +30,6 @@ export class HomePage {
         this.x = orientation.x
         this.y = orientation.y
         this.z = orientation.z
-        this.tam = orientation.x * 10000
-
-
       })
       .catch()
   }
