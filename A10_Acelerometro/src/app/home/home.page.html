@@ -8,7 +8,23 @@
 
 <ion-content>
   <div class="ion-padding">
-    The world is your oyster.
-    <button onclick="getAcceleration()">Acceleração</button>
+    <ion-button (click)="startAceleration()">start Acceleração</ion-button>
+    <ion-button (click)="watch()">watch Acceleração</ion-button>
   </div>
+  <ion-list>
+    <ion-item>
+      <ion-label>X</ion-label>
+      <ion-input readonly name="x" [(ngModel)]="x" ngDefaultControl></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>X</ion-label>
+      <ion-input readonly name="y" [(ngModel)]="y" ngDefaultControl></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Z</ion-label>
+      <ion-input readonly name="z"  [(ngModel)]="z" ngDefaultControl></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
 </ion-content>

@@ -1,177 +1,112 @@
-import { Component } from '@angular/core';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import {NavController} from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
-
+import { Component, NgZone } from '@angular/core';
+import { BLE } from '@ionic-native/ble/ngx';
+import { AlertController, ToastController } from '@ionic/angular';
+const LIGHTBULB_SERVICE = 'ff10';
+const SWITCH_CHARACTERISTIC = 'ff11';
+const DIMMER_CHARACTERISTIC = 'ff12';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-/*  constructor(private bluetoothSerial: BluetoothSerial) { 
-    this.bluetoothSerial.enable();
-    bluetoothSerial.connect('78:02:F8:09:9E:84');
-    bluetoothSerial.write("hello, world");
 
-   
+  dispositivos = []
+  brightness: number;
+  constructor(
+    private ble: BLE,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
+    private ngZone: NgZone) {
+
   }
-  enableBluetooth() {
-    
-}
 
-}*/
-unpairedDevices: any;
-unpairedDevicesError:any;
-pairedDevices: any;
-gettingDevices: Boolean;
+  scan() {
+    this.dispositivos = []
+    this.ble.scan([], 5).subscribe(b => {
+      this.dispositivos.push(b);
+    })
+  }
 
-btNearBy: boolean;
+  conect(disp) {
 
-constructor(private bluetoothSerial: BluetoothSerial, private alertCtrl: AlertController, public navCtrl: NavController)
-{
-bluetoothSerial.enable();
-this.unpairedDevices = null;
-this.startScanning();
-}
+    this.ble.connect(disp.id).subscribe(() => {
 
-startScanning()
-{
-this.bluetoothSerial.enable();
-this.pairedDevices = null;
-this.unpairedDevices = null;
-this.unpairedDevicesError=null;
-this.gettingDevices = true;
+      let toast = this.toastCtrl.create(
+        {
+          duration: 2000,
+          message: "Conectado com sucesso com " + disp.name,
+          position: 'bottom'
+        }).then(data => {
+          data.present();
+        })
 
-this.bluetoothSerial.discoverUnpaired().then((success) => { 
-          
-          var arrayWithDuplicates = success;
-
-          var uniqueArray =this.removeDuplicates(arrayWithDuplicates,"class");
-
-          console.log("uniqueArray is: " + JSON.stringify(uniqueArray));
-
-          console.log(uniqueArray);
-
-          this.unpairedDevices=uniqueArray;
-          this.gettingDevices = false;
-},    
-(err) => {
-  console.log(err);
-  var errorvalue=['Problem while discovering'];
-  this.unpairedDevicesError=errorvalue;
-})
-
-this.bluetoothSerial.list().then((success) => {
-  this.pairedDevices = success;
-},
-(err) => {
- console.log(err);
-})
-}
-
-removeDuplicates(originalArray, prop)
-{
-var newArray = [];
-var lookupObject = {};
-
- for(var i in originalArray) 
- {
-    lookupObject[originalArray[i][prop]] = originalArray[i];
- }
-
- for(i in lookupObject) 
- {
-     newArray.push(lookupObject[i]);
- }
-  return newArray;
-}
-
-//success = (data) => console.log('success data : ',data);
-
-//fail = (error) => console.log('Failure Data : ',error);
-
-success(data)
-{
-console.log('success data : '+ JSON.stringify(data));
-this.bluetoothSerial.available().then(data =>{
-
-    console.log("Available " + JSON.stringify(data));
-
-    this.bluetoothSerial.read().then(data =>{
-
-      console.log("Read " + JSON.stringify(data));
-
-    });
-  });
-}
-
-fail(error)
-{
-console.log('Failure Data : '+ JSON.stringify(error));
-}
-
-selectDevice(address: any)
-{
-let alert = this.alertCtrl.create({
-
-message: 'Do you want to connect with?',
-buttons:
-[
-{
-text: 'Cancel',
-role: 'cancel',
-handler: () => {
-console.log('Cancel clicked');
-}
-},
-{
-text: 'Connect',
-handler: () =>
-{
-this.bluetoothSerial.connect(address).subscribe(this.success, this.fail);
-}
-}
-]
-});
+    })
+  }
 
 
-}
+  conectado(disp) {
 
-disconnect() {
-let alert = this.alertCtrl.create({
-message: 'Do you want to Disconnect?',
-buttons: [
-{
-text: 'Cancel',
-role: 'cancel',
-handler: () => {
-console.log('Cancel clicked');
-}
-},
-{
-text: 'Disconnect',
-handler: () => {
-this.bluetoothSerial.disconnect();
-}
-}
-]
-});
-}
+    this.ble.isConnected(disp.id).then(() => {
+      let toast = this.toastCtrl.create(
+        {
+          duration: 2000,
+          message: "Esta conectado com: " + disp.name,
+          position: 'bottom'
+        }).then(data => {
+          data.present()
+        })
 
-searchNearBy()
-{
+    }).catch(() => {
+      let toast = this.toastCtrl.create(
+        {
+          duration: 2000,
+          message: "Bluetooth não esta conectado!",
+          position: 'bottom'
+        }).then(data => {
+          data.present()
+        })
+    })
 
-let chkbox=this.btNearBy;
-if(chkbox != true)
-{ 
-  this.gettingDevices=false;
-}
-else
-{      
-  this.startScanning();
-}
-}
+  }
 
+  Send(disp) {
+    let buffer = new ArrayBuffer(1);
+    buffer[0] = 0xff
+    this.ble.write(disp.id, LIGHTBULB_SERVICE, DIMMER_CHARACTERISTIC, buffer).then(ok => {
+      let toast = this.toastCtrl.create(
+        {
+          duration: 2000,
+          message: "Enviado com sucesso!" + ok,
+          position: 'bottom'
+        }).then(data => {
+          data.present()
+        })
+    }).catch(erro => {
+      let toast = this.toastCtrl.create(
+        {
+          duration: 2000,
+          message: "Enviado com erro!" + erro,
+          position: 'bottom'
+        }).then(data => {
+          data.present();
+        })
+    })
+
+  }
+
+
+  // stringToBytes(string):ArrayBuffer { 
+  //   var array = new Uint8Array(string.length);
+  //   for (var i = 0, l = string.length; i < l; i++) {
+  //     array[i] = string.charCodeAt(i);
+  //   }
+  //   return array.buffer;
+  // }
+
+  // // ASCII only
+  // bytesToString(buffer) {
+  //   return String.fromCharCode.apply(null, new Uint8Array(buffer));
+  // }
 }
 

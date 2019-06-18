@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DeviceMotion, DeviceMotionAccelerationData } from '@ionic-native/device-motion/ngx';
+import { Gyroscope, GyroscopeOrientation, GyroscopeOptions } from '@ionic-native/gyroscope/ngx';
 
 var subscription;
 
@@ -9,23 +9,37 @@ var subscription;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  
-  constructor(private deviceMotion: DeviceMotion) {
-    console.log('batata');
-    subscription = this.deviceMotion.watchAcceleration().subscribe((acceleration: DeviceMotionAccelerationData) => {
-      console.log(acceleration);
-    }); 
-   }
-  
-  getAcceleration(){
-  this.deviceMotion.getCurrentAcceleration().then(
-    (acceleration: DeviceMotionAccelerationData) => console.log(acceleration),
-    (error: any) => console.log(error)
-  );}
-  startAceleration(){
-    subscription.subscribe();}
-  
-  stopAceleration(){
-  subscription.unsubscribe();}
 
+  x: any
+  y: any
+  z: any
+  constructor(private gyroscope: Gyroscope) {
+
+  }
+
+  getAcceleration() {
+
+  }
+  startAceleration() {
+
+    let options: GyroscopeOptions = {
+      frequency: 10
+    }
+    this.gyroscope.getCurrent(options)
+      .then((orientation: GyroscopeOrientation) => {
+        this.x = orientation.x
+        this.y = orientation.y
+        this.z = orientation.z
+      })
+      .catch()
+  }
+
+  watch() {
+    this.gyroscope.watch()
+      .subscribe((orientation: GyroscopeOrientation) => {
+        this.x = orientation.x
+        this.y = orientation.y
+        this.z = orientation.z
+      });
+  }
 }
