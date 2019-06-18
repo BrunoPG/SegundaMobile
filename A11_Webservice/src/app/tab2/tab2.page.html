@@ -16,7 +16,7 @@
       <ion-label>EMAIL</ion-label>
       <ion-textarea [(ngModel)]="email"></ion-textarea>
     </ion-item>
-    <ion-button (click)="criar()"></ion-button>
+    <ion-button (click)="criar()" expand="full">Salvar</ion-button>
   <!-- </form> -->
   <ion-list lines="none">
     <ion-list-header>
@@ -24,6 +24,7 @@
     </ion-list-header>
     <ion-item href="https://ionicframework.com/docs/" *ngFor="let item of userlista">
       <ion-icon slot="start" color="medium" name="book"></ion-icon>
+      <ion-label>{{item.nome}}</ion-label>
       <ion-label>{{item.email}}</ion-label>
     </ion-item>
     

@@ -17,16 +17,5 @@ export class Tab3Page {
 
     const pushObject: PushObject = this.push.init(options);
 
-    pushObject.on("registration").subscribe((registration: any) => {});
-
-    pushObject.on("notification").subscribe((notification: any) => {
-      if (notification.additionalData.foreground) {
-        let youralert = this.alertCtrl.create({
-          title: notification.label,
-          message: notification.message
-        });
-        youralert.present();
-      }
-    });
   }
 }
