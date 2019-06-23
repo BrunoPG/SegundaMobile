@@ -10,11 +10,14 @@ var subscription;
 })
 export class HomePage {
 
-  x: any
-  y: any
-  z: any
+  x: number
+  y: number
+  z: number
   constructor(private gyroscope: Gyroscope) {
 
+    this.x = 0;
+    this.y = 0
+    this.z = 0
   }
 
   getAcceleration() {
@@ -22,7 +25,8 @@ export class HomePage {
   }
   startAceleration() {
 
-    let options: GyroscopeOptions = {
+    
+     let options: GyroscopeOptions = {
       frequency: 10
     }
     this.gyroscope.getCurrent(options)

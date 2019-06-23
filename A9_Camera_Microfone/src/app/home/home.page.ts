@@ -23,7 +23,7 @@ export class HomePage {
       quality: 100,
       destinationType: this.cam.DestinationType.DATA_URL,
       encodingType: this.cam.EncodingType.JPEG,
-      mediaType: this.cam.MediaType.PICTURE,
+      mediaType: this.cam.MediaType.VIDEO,
       saveToPhotoAlbum: true
     }
 

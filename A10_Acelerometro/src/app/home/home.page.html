@@ -17,14 +17,23 @@
       <ion-input readonly name="x" [(ngModel)]="x" ngDefaultControl></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>X</ion-label>
+      <ion-label>Y</ion-label>
       <ion-input readonly name="y" [(ngModel)]="y" ngDefaultControl></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Z</ion-label>
-      <ion-input readonly name="z"  [(ngModel)]="z" ngDefaultControl></ion-input>
+      <ion-input readonly name="z" [(ngModel)]="z" ngDefaultControl></ion-input>
     </ion-item>
   </ion-list>
 
-  <!-- <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+  <ion-item>
+    <img [style.margin-left.px]="x+200"
+      src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+  </ion-item>
+  <ion-item>
+    <img [style.margin-left.px]="y+200"
+      src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+  </ion-item>
+  <!-- <img style="margin-left: 200" [style.margin-top.px]="z" src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y"> -->
+
 </ion-content>

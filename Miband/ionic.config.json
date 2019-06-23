@@ -1,0 +1,7 @@
+{
+  "name": "Miband",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
