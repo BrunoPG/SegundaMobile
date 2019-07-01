@@ -18,20 +18,23 @@ export class HomePage {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private ngZone: NgZone) {
-
+      console.log("constructor")
   }
 
   scan() {
+    console.log("scan")
     this.dispositivos = []
-    this.ble.scan([], 5).subscribe(b => {
-      this.dispositivos.push(b);
+    this.ble.scan([], 15).subscribe(b => {
+      this.dispositivos.push(b)
     })
   }
 
   conect(disp) {
+    console.log("connect")
 
-    this.ble.connect(disp.id).subscribe(() => {
-
+    this.ble.connect(disp.id).subscribe(data => {
+      console.log("sucesso")
+      data.services.forEach(console.log)
       let toast = this.toastCtrl.create(
         {
           duration: 2000,
@@ -46,8 +49,10 @@ export class HomePage {
 
 
   conectado(disp) {
+    console.log("conectado")
 
     this.ble.isConnected(disp.id).then(() => {
+      this.readFirstServiceIfPossible(disp);
       let toast = this.toastCtrl.create(
         {
           duration: 2000,
@@ -70,7 +75,40 @@ export class HomePage {
 
   }
 
+  readFirstServiceIfPossible(disp) {
+    this.readService(disp.id, disp.characteristics[0]);
+  }
+
+  readAllServices(disp) {
+    disp.characteristics.forEach(cWrapper => this.readService(disp.id, cWrapper));
+  }
+
+  readService(dispId, characteristicWrapper) {
+    if(characteristicWrapper.properties.includes("Read")) {
+      let promise = this.ble.read(dispId, characteristicWrapper.service, characteristicWrapper.characteristic);
+      promise.then(this.exhibitByteToConsole);
+    }
+  }
+
+  exhibitByteToConsole(resp) {
+    console.log(resp);
+    console.log(this.bytesToString(resp));
+  }
+
+  stringToBytes(string) {
+     var array = new Uint8Array(string.length);
+     for (var i = 0, l = string.length; i < l; i++) {
+         array[i] = string.charCodeAt(i);
+      }
+      return array.buffer;
+  }
+
+  bytesToString(buffer) {
+      return String.fromCharCode.apply(null, new Uint8Array(buffer));
+  }
+
   Send(disp) {
+    console.log("send")
     let buffer = new ArrayBuffer(1);
     buffer[0] = 0xff
     this.ble.write(disp.id, LIGHTBULB_SERVICE, DIMMER_CHARACTERISTIC, buffer).then(ok => {
@@ -96,7 +134,7 @@ export class HomePage {
   }
 
 
-  // stringToBytes(string):ArrayBuffer { 
+  // stringToBytes(string):ArrayBuffer {
   //   var array = new Uint8Array(string.length);
   //   for (var i = 0, l = string.length; i < l; i++) {
   //     array[i] = string.charCodeAt(i);
@@ -109,4 +147,3 @@ export class HomePage {
   //   return String.fromCharCode.apply(null, new Uint8Array(buffer));
   // }
 }
-
